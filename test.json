@@ -1,0 +1,15 @@
+{
+    "source": "UKESM1-0-LL",
+    "scenario": "historical",
+    "variable": "sfcWind",
+    "frequency": "3h",
+    "variant_label": "r1i1p1f2",
+    "t0": "1980-01-01",
+    "tf": "2010-12-31",
+    "other_vars": ["sfcWind", "psl", "siconc"],
+    "scenarioss": ["historical", "SSP126", "SSP245", "SSP370"],
+    "sources+variants" : ["GFDL-ESM4_r1i1p1f1", "IPSL-CM6A-LR_r1i1p1f1",
+        "MPI-ESM1-2-HR_r1i1p1f1", "MRI-ESM2-0_r1i1p1f1", "UKESM1-0-LL_r1i1p1f2",
+        "CanESM5_r1i1p1f1", "CNRM-CM6-1_r1i1p1f2", "CNRM-ESM2-1_r1i1p1f2", "EC-Earth3_r1i1p1f1",
+        "MIROC6_r1i1p1f1", "CMCC-ESM2_r1i1p1"]
+}

@@ -1,0 +1,11 @@
+defusedxml
+jinja2
+requests
+requests_cache
+webob
+myproxyclient
+jupyterlab
+xarray
+netCDF4
+h5py
+python-dotenv==0.19.2 
