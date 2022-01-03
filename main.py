@@ -8,10 +8,11 @@ from pyesgf.logon import LogonManager
 
 from src.cmip6_jrc_pkg.cmip6_tools import (
         connect_esg, 
+        loggin_esgf,
         number_of_matchs,
         massive_search,
         get_ctx,
-        #massive_download,
+        massive_download,
 )
 
 load_dotenv()
@@ -68,18 +69,9 @@ frequencies = [
     "mon",
 ]
 
-# Connect to esgf
-lm = LogonManager()
-lm.logoff()
-lm.is_logged_on()
 
-myproxy_host = 'esgf-data.dkrz.de'
-myproxy_host = 'esgf-node.llnl.gov'
-myproxy_host = 'esgf.nci.org.au'
-lm.logon(username=os.environ.get("USERNAME"), password=os.environ.get("PASSWORD"), hostname=myproxy_host)
-#lm.logon(username=os.environ.get("OPENID"), password=os.environ.get("PASSWORD"), hostname=myproxy_host)
-#lm.logon(username=None, password=None, hostname=myproxy_host)
-print(lm.is_logged_on())
+lm = loggin_esgf()
+print("Connection stablished... ", lm.is_logged_on())
 
 #massive_download()
 jdata["source"] = models[0].split("_")[0]
@@ -89,6 +81,11 @@ jdata["frequency"] = "3hr"
 jdata["from_timestamp"] = "1980-01-01T00:00:00Z"
 jdata["to_timestamp"] = "2010-01-01T00:00:00Z"
 jdata["variant_label"] = models[0].split("_")[-1]
+
+
+massive_download([urls[0]], [models[0]], [scenarios[0]], ["uas"], ["3hr"])
+
+jferieji
 
 conn = connect_esg(urls[0])
 print("mathcs = ", number_of_matchs(conn, jdata))
