@@ -17,12 +17,12 @@ from src.cmip6_jrc_pkg.cmip6_tools import (
 
 load_dotenv()
 
-parser = argparse.ArgumentParser()
-parser.add_argument("--json", help="insert parameters oilspill json format")
-args = parser.parse_args()
+#parser = argparse.ArgumentParser()
+#parser.add_argument("--json", help="insert parameters oilspill json format")
+#args = parser.parse_args()
 
-with open(args.json) as f:
-    jdata = json.load(f)
+#with open(args.json) as f:
+#    jdata = json.load(f)
 
 urls = [
     "esgf-node.llnl.gov/esg-search",
@@ -53,10 +53,10 @@ scenarios = [
 ]
 
 variables = [
-    "sfcWind",
-    "ua",
+#    "sfcWind",
+#    "ua",
     "uas",
-    "va",
+#    "va",
     "vas",
     "psl",
     "siconc",
@@ -64,58 +64,20 @@ variables = [
 
 frequencies = [
     "3hr",
-    "6hr",
-    "day",
-    "mon",
+#    "6hr",
+#    "day",
+#    "mon",
 ]
 
 
 lm = loggin_esgf()
 print("Connection stablished... ", lm.is_logged_on())
 
-#massive_download()
-jdata["source"] = models[0].split("_")[0]
-jdata["scenario"] = scenarios[0]
-jdata["variable"] = "uas"
-jdata["frequency"] = "3hr"
-jdata["from_timestamp"] = "1980-01-01T00:00:00Z"
-jdata["to_timestamp"] = "2010-01-01T00:00:00Z"
-jdata["variant_label"] = models[0].split("_")[-1]
-
-
-massive_download([urls[0]], [models[0]], [scenarios[0]], ["uas"], ["3hr"])
-
-jferieji
-
-conn = connect_esg(urls[0])
-print("mathcs = ", number_of_matchs(conn, jdata))
-ctx = get_ctx(conn, jdata)
-ds = ctx.search()[0]
-
-fc = ds.file_context()
-print(fc.hit_count)
-jfirjri
-
-wget_script_content = fc.get_download_script()
-download_dir = "data/"
-script_name = "script1.sh"
-#download_dir = tempfile.mkstemp(suffix='.sh', prefix='download-')[1]
-with open(download_dir + script_name, "w") as writer:
-    writer.write(wget_script_content)
-    
-import os, subprocess
-os.chmod(download_dir, 0o750)
-
-cmd = f"cd data/ && bash {script_name}"
-p = subprocess.Popen(cmd, shell=True)
-
-"""
-massive_search(
+massive_download(
         urls, 
         models, 
         scenarios, 
         variables, 
         frequencies
 )
-"""
 print("===== DONE =======")
