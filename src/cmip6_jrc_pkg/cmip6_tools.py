@@ -30,10 +30,12 @@ def loggin_esgf():
     #    myproxy_host = 'esgf-data.dkrz.de'
     #    myproxy_host = 'esgf-node.llnl.gov'
     myproxy_host = "esgf.nci.org.au"
+
     lm.logon(
-        username=os.environ.get("USERNAME"),
-        password=os.environ.get("PASSWORD"),
-        hostname=myproxy_host,
+        username  = os.environ.get("USERNAME"),
+        password  = os.environ.get("PASSWORD"),
+        hostname  = myproxy_host,
+        bootstrap = True,
     )
     return lm
 
@@ -193,7 +195,7 @@ def massive_download(urls, models, scenarios, variables, frequencies):
 
                             os.chmod(download_dir + script_name, 0o750)
 
-                            print("Downloading data ... ")
-                            cmd = f"cd data/ && bash {script_name}"
-                            p = subprocess.Popen(cmd, shell=True)
-                            p.wait()
+                            #print("Downloading data ... ")
+                            #cmd = f"cd data/ && bash {script_name}"
+                            #p = subprocess.Popen(cmd, shell=True)
+                            #p.wait()

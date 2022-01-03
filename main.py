@@ -26,9 +26,9 @@ load_dotenv()
 
 urls = [
     "esgf-node.llnl.gov/esg-search",
-    "esgf-node.ipsl.upmc.fr/esg-search",
-    "esgf-data.dkrz.de/esg-search",
-    "esgf-index1.ceda.ac.uk/esg-search",
+#    "esgf-node.ipsl.upmc.fr/esg-search",
+#    "esgf-data.dkrz.de/esg-search",
+#    "esgf-index1.ceda.ac.uk/esg-search",
 ]
 
 models = [
@@ -70,8 +70,8 @@ frequencies = [
 ]
 
 
-lm = loggin_esgf()
-print("Connection stablished... ", lm.is_logged_on())
+#lm = loggin_esgf()
+#print("Connection stablished... ", lm.is_logged_on())
 
 massive_download(
         urls, 
