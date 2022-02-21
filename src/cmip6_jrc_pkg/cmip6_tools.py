@@ -140,7 +140,7 @@ def massive_search(urls, models, scenarios, variables, frequencies):
         print("url: ", url, " analysed!")
 
 
-def massive_download(urls, models, scenarios, variables, frequencies):
+def massive_download(urls, models, scenarios, variables, frequencies, download_dir):
     """
     comments
     """
@@ -174,7 +174,7 @@ def massive_download(urls, models, scenarios, variables, frequencies):
                             fc = ds.file_context()
 
                             wget_script_content = fc.get_download_script()
-                            download_dir = "data/"
+#                            download_dir = outdir
                             script_name = (
                                 "wget_"
                                 + jdata["source"]

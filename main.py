@@ -25,46 +25,48 @@ load_dotenv()
 #    jdata = json.load(f)
 
 urls = [
-    "esgf-node.llnl.gov/esg-search",
+#    "esgf-node.llnl.gov/esg-search",
 #    "esgf-node.ipsl.upmc.fr/esg-search",
-#    "esgf-data.dkrz.de/esg-search",
+    "esgf-data.dkrz.de/esg-search",
 #    "esgf-index1.ceda.ac.uk/esg-search",
 ]
 
 models = [
-    "GFDL-ESM4_r1i1p1f1",
-    "IPSL-CM6A-LR_r1i1p1f1",
-    "MPI-ESM1-2-HR_r1i1p1f1",
+#    "GFDL-ESM4_r1i1p1f1",
+#    "IPSL-CM6A-LR_r1i1p1f1",
+#    "MPI-ESM1-2-HR_r1i1p1f1",
     "MRI-ESM2-0_r1i1p1f1",
-    "UKESM1-0-LL_r1i1p1f2",
-    "CanESM5_r1i1p1f1",
-    "CNRM-CM6-1_r1i1p1f2",
-    "CNRM-ESM2-1_r1i1p1f2",
-    "EC-Earth3_r1i1p1f1",
-    "MIROC6_r1i1p1f1",
-    "CMCC-ESM2_r1i1p1",
+#    "UKESM1-0-LL_r1i1p1f2",
+#    "CanESM5_r1i1p1f1",
+#    "CNRM-CM6-1_r1i1p1f2",
+#    "CNRM-ESM2-1_r1i1p1f2",
+#    "EC-Earth3_r1i1p1f1",
+#    "MIROC6_r1i1p1f1",
+#    "CMCC-ESM2_r1i1p1f1",
 ]
 
 scenarios = [
-    "historical",
+#    "historical",
     "ssp126",
-    "ssp245",
-    "ssp370",
+#    "ssp245",
+#    "ssp370",
 ]
 
 variables = [
 #    "sfcWind",
 #    "ua",
-    "uas",
+#    "uas",
 #    "va",
-    "vas",
+#    "vas",
     "psl",
-    "siconc",
+#    "siconc",
 ]
 
 frequencies = [
-    "3hr",
+#    "3hr",
 #    "6hr",
+#    "3hrPt",
+    "6hrPt",
 #    "day",
 #    "mon",
 ]
@@ -78,6 +80,7 @@ massive_download(
         models, 
         scenarios, 
         variables, 
-        frequencies
+        frequencies,
+        "./",
 )
 print("===== DONE =======")
