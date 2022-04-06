@@ -1,16 +1,26 @@
 import datetime
-import subprocess
+import errno
 import os
+import shutil
+import subprocess
 
 from dotenv import load_dotenv
+
 from pyesgf.logon import LogonManager
 from pyesgf.search import SearchConnection
-
 
 load_dotenv()
 
 
 cmip_project = "CMIP6"
+
+
+def silentremove(filename):
+    try:
+        os.remove(filename)
+    except OSError as e:  # this would be "except OSError, e:" before Python 2.6
+        if e.errno != errno.ENOENT:  # errno.ENOENT = no such file or directory
+            raise  # re-raise exception if a different error occurred
 
 
 def connect_esg(url):
@@ -32,10 +42,10 @@ def loggin_esgf():
     myproxy_host = "esgf.nci.org.au"
 
     lm.logon(
-        username  = os.environ.get("USERNAME"),
-        password  = os.environ.get("PASSWORD"),
-        hostname  = myproxy_host,
-        bootstrap = True,
+        username=os.environ.get("USERNAME"),
+        password=os.environ.get("PASSWORD"),
+        hostname=myproxy_host,
+        bootstrap=True,
     )
     return lm
 
@@ -150,19 +160,38 @@ def massive_download(urls, models, scenarios, variables, frequencies, download_d
             for scenario in scenarios:
                 for variable in variables:
                     for frequency in frequencies:
+
                         jdata = {}
+                        jdata["source"] = model.split("_")[0]
+                        jdata["scenario"] = scenario
+                        jdata["variable"] = variable
+                        jdata["frequency"] = frequency
+                        jdata["variant_label"] = model.split("_")[-1]
+
+                        script_name = (
+                            "wget_"
+                            + jdata["source"]
+                            + "_"
+                            + jdata["variant_label"]
+                            + "_"
+                            + jdata["scenario"]
+                            + "_"
+                            + jdata["variable"]
+                            + "_"
+                            + jdata["frequency"]
+                            + "_"
+                            + url.split("/")[0]
+                            + ".sh"
+                        )
+                        if os.path.exists(download_dir + "/" + script_name):
+                            continue
+
                         if scenario == "historical":
                             jdata["t0"] = "1980-01-01"
                             jdata["tf"] = "2010-12-31"
                         else:
                             jdata["t0"] = "2010-01-01"
                             jdata["tf"] = "2100-12-31"
-
-                        jdata["source"] = model.split("_")[0]
-                        jdata["scenario"] = scenario
-                        jdata["variable"] = variable
-                        jdata["frequency"] = frequency
-                        jdata["variant_label"] = model.split("_")[-1]
 
                         conn = connect_esg(url)
                         matchs = number_of_matchs(conn, jdata)
@@ -174,7 +203,7 @@ def massive_download(urls, models, scenarios, variables, frequencies, download_d
                             fc = ds.file_context()
 
                             wget_script_content = fc.get_download_script()
-#                            download_dir = outdir
+                            #                            download_dir = outdir
                             script_name = (
                                 "wget_"
                                 + jdata["source"]
@@ -186,6 +215,8 @@ def massive_download(urls, models, scenarios, variables, frequencies, download_d
                                 + jdata["variable"]
                                 + "_"
                                 + jdata["frequency"]
+                                + "_"
+                                + url.split("/")[0]
                                 + ".sh"
                             )
                             print("Generating script: ", script_name)
@@ -195,7 +226,50 @@ def massive_download(urls, models, scenarios, variables, frequencies, download_d
 
                             os.chmod(download_dir + script_name, 0o750)
 
-                            #print("Downloading data ... ")
-                            #cmd = f"cd data/ && bash {script_name}"
-                            #p = subprocess.Popen(cmd, shell=True)
-                            #p.wait()
+                            # print("Downloading data ... ")
+                            # cmd = f"cd data/ && bash {script_name}"
+                            # p = subprocess.Popen(cmd, shell=True)
+                            # p.wait()
+
+
+def check_variables_exist(url, model, scenario, variables, frequency, download_dir):
+
+    nonvalid = False
+    path_list = []
+    path_scripts = []
+    modelSplit = model.split("_")
+    for variable in variables:
+        script_name = (
+            "wget_"
+            + modelSplit[0]
+            + "_"
+            + modelSplit[-1]
+            + "_"
+            + scenario
+            + "_"
+            + variable
+            + "_"
+            + frequency
+            + "_"
+            + url.split("/")[0]
+            + ".sh"
+        )
+        path_scripts.append(download_dir + script_name)
+        varOk = os.path.exists(download_dir + script_name)
+        path_list.append(varOk)
+
+    if not all(path_list):
+        for script in path_scripts:
+            silentremove(script)
+    else:
+        newDir = download_dir + scenario + "/" + modelSplit[0]
+        os.makedirs(newDir, exist_ok=True)
+        for script in path_scripts:
+            if os.path.getsize(script) < 1000:
+                nonvalid = True
+
+            if nonvalid:
+                silentremove(script)
+            else:
+                script_name = script.split("/")[-1]
+                shutil.move(script, newDir + "/" + script_name)
