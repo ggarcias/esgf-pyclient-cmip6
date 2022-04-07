@@ -23,6 +23,14 @@ def silentremove(filename):
             raise  # re-raise exception if a different error occurred
 
 
+def check_size(script, threshold):
+    """
+    path to script and threshold in bytes that is acceptable
+    """
+    if os.path.getsize(script) < threshold:
+        silentremove(script)
+
+
 def connect_esg(url):
     """
     comments
@@ -59,7 +67,7 @@ def number_of_matchs(conn, jdata):
     timestamp_end = datetime.datetime.strptime(jdata["tf"], "%Y-%m-%d")
 
     ctx = conn.new_context(
-        #facets="project, source, experiment_id, variable, frequency, variant_label, from_timestamp, to_timestamp",
+        # facets="project, source, experiment_id, variable, frequency, variant_label, from_timestamp, to_timestamp",
         project=cmip_project,
         source_id=jdata["source"],
         experiment_id=jdata["scenario"],
@@ -82,7 +90,7 @@ def get_ctx(conn, jdata):
     timestamp_end = datetime.datetime.strptime(jdata["tf"], "%Y-%m-%d")
 
     ctx = conn.new_context(
-        #facets="project, source, experiment_id, variable, frequency, variant_label, from_timestamp, to_timestamp",
+        # facets="project, source, experiment_id, variable, frequency, variant_label, from_timestamp, to_timestamp",
         project=cmip_project,
         source_id=jdata["source"],
         experiment_id=jdata["scenario"],
@@ -225,6 +233,8 @@ def massive_download(urls, models, scenarios, variables, frequencies, download_d
                                 writer.write(wget_script_content)
 
                             os.chmod(download_dir + script_name, 0o750)
+
+                            check_size(download_dir + script_name, 1000)
 
                             # print("Downloading data ... ")
                             # cmd = f"cd data/ && bash {script_name}"
