@@ -27,7 +27,7 @@ def connect_esg(url):
     """
     comments
     """
-    conn = SearchConnection("https://" + url, distrib=True)
+    conn = SearchConnection("https://" + url, distrib=False)
     return conn
 
 
@@ -59,7 +59,7 @@ def number_of_matchs(conn, jdata):
     timestamp_end = datetime.datetime.strptime(jdata["tf"], "%Y-%m-%d")
 
     ctx = conn.new_context(
-        facets="*",
+        #facets="project, source, experiment_id, variable, frequency, variant_label, from_timestamp, to_timestamp",
         project=cmip_project,
         source_id=jdata["source"],
         experiment_id=jdata["scenario"],
@@ -82,7 +82,7 @@ def get_ctx(conn, jdata):
     timestamp_end = datetime.datetime.strptime(jdata["tf"], "%Y-%m-%d")
 
     ctx = conn.new_context(
-        facets="*",
+        #facets="project, source, experiment_id, variable, frequency, variant_label, from_timestamp, to_timestamp",
         project=cmip_project,
         source_id=jdata["source"],
         experiment_id=jdata["scenario"],
