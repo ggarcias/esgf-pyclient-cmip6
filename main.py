@@ -35,17 +35,17 @@ urls = [
 ]
 
 models = [
-    "GFDL-ESM4_r1i1p1f1",
-    "IPSL-CM6A-LR_r1i1p1f1",
-    "MPI-ESM1-2-HR_r1i1p1f1",
-    "MRI-ESM2-0_r1i1p1f1",
-    "UKESM1-0-LL_r1i1p1f2",
-    "CanESM5_r1i1p1f1",
-    "CNRM-CM6-1_r1i1p1f2",
-    "CNRM-ESM2-1_r1i1p1f2",
-    "EC-Earth3_r1i1p1f1",
-    "MIROC6_r1i1p1f1",
+#    "CanESM5_r1i1p1f1",
     "CMCC-ESM2_r1i1p1f1",
+#    "CNRM-CM6-1_r1i1p1f2",
+#    "CNRM-ESM2-1_r1i1p1f2",
+#    "EC-Earth3_r1i1p1f1",
+#    "GFDL-ESM4_r1i1p1f1",
+#    "IPSL-CM6A-LR_r1i1p1f1",
+#    "MIROC6_r1i1p1f1",
+#    "MPI-ESM1-2-HR_r1i1p1f1",
+#    "MRI-ESM2-0_r1i1p1f1",
+#    "UKESM1-0-LL_r1i1p1f2",
 ]
 
 scenarios = [
@@ -89,6 +89,7 @@ massive_download(
 )
 
 
+"""
 for url in urls:
     for model in models:
         for scenario in scenarios:
@@ -96,5 +97,6 @@ for url in urls:
                 check_variables_exist(
                     url, model, scenario, variables, frequency, download_dir
                 )
+"""
 
 print("===== DONE =======")
